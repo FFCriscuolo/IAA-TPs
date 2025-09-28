@@ -19,7 +19,7 @@ y = breast_cancer_wisconsin_diagnostic.data.targets.values.ravel()
 classes, y = np.unique(y, return_inverse=True)
 
 # Separación en train/test (80/20)
-np.random.seed(41)
+np.random.seed(40)
 indices = np.arange(len(X))
 np.random.shuffle(indices)
 
