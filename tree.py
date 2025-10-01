@@ -76,6 +76,8 @@ class CART:
         self.min_samples_split = min_samples_split # Mínimo de muestras para hacer split
         self.min_samples_leaf = min_samples_leaf # Mínimo de muestras en una hoja después del split
         self.tree = None
+        self.rndm_forest = False
+        self.max_features = None
 
     def _grow_tree(self, X, y, depth=0):
         classes, counts = np.unique(y, return_counts=True)
@@ -92,6 +94,11 @@ class CART:
         
         if self.max_depth is not None and depth >= self.max_depth:
             return node # Si hemos alcanzado la profundidad máxima
+        
+        if self.rndm_forest and self.max_features is not None:
+            n_features = X.shape[1]
+            feature_indices = np.random.choice(n_features, self.max_features, replace=False)
+            X = X[:, feature_indices]
         
         idx, thr, best_gini = best_split(X, y)
         # Solo split si mejora la impureza del nodo
