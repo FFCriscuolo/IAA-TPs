@@ -17,13 +17,16 @@ def print_tree(node, depth=0):
 
 # Función para encontrar el mejor split, devuelve qué feature y threshold es mejor
 # para dividir el dataset y reducir la impureza de Gini, junto con las particiones
-def best_split(X, y, features):
+def best_split(X, y):
     m, n = X.shape # m=número de muestras, n=número de features
-    best_gini = 1.0 # Inicializamos con el peor caso
-    best_idx, best_thr = None, None
 
-    for feature_idx in features:  # Features elegidas
-         # Ordenamos las muestras según la feature actual
+    best_gini = 1.0 # Inicializamos con el peor caso
+    best_idx, best_thr = None, None 
+    best_left, best_right = None, None
+
+    # Probamos cada feature
+    for feature_idx in range(n):
+        # Ordenamos las muestras según la feature actual
         order = np.argsort(X[:, feature_idx])
         vals = X[order, feature_idx]
         labs = y[order]
@@ -50,7 +53,7 @@ def best_split(X, y, features):
             if gini < best_gini:
                 best_gini = gini
                 best_idx = feature_idx # Índice de la feature
-                best_thr = (vals[i] + vals[i-1]) / 2 # Punto medio entre dos valores
+                best_thr = (vals[i] + vals[i - 1]) / 2 # Punto medio entre dos valores
 
     return best_idx, best_thr, best_gini
 
@@ -68,12 +71,14 @@ class Node:
 
 # Construcción recursiva del árbol
 class CART:
-    def __init__(self, max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features=None):
+    def __init__(self, max_depth=None, min_samples_split=2, min_samples_leaf=1):
         self.max_depth = max_depth # Profundidad máxima del árbol
         self.min_samples_split = min_samples_split # Mínimo de muestras para hacer split
         self.min_samples_leaf = min_samples_leaf # Mínimo de muestras en una hoja después del split
-        self.max_features = max_features # Máximo de features para hacer split en RF
         self.tree = None
+        self.rndm_forest = False
+        self.max_features = None
+        self.X_sample = None
 
     def _grow_tree(self, X, y, depth=0):
         classes, counts = np.unique(y, return_counts=True)
@@ -87,29 +92,19 @@ class CART:
 
         if node.gini == 0 or len(y) < self.min_samples_split: # Si todas las muestras son de la misma clase o
             return node # si no hay suficientes muestras para split
+        
         if self.max_depth is not None and depth >= self.max_depth:
             return node # Si hemos alcanzado la profundidad máxima
-
-        # El número total de features
-        n_features = X.shape[1]
-
-        # Elegimos un subconjunto aleatorio de features
-        # (típicamente se usa sqrt o log2)
-        if self.max_features is None:
-            features = np.arange(n_features)
-        elif self.max_features == "sqrt":
-            k = int(np.sqrt(n_features))
-            features = np.random.choice(n_features, k, replace=False)
-        elif self.max_features == "log2":
-            k = int(np.log2(n_features))
-            features = np.random.choice(n_features, k, replace=False)
-        else:  # Número entero
-            k = min(self.max_features, n_features)
-            features = np.random.choice(n_features, k, replace=False)
-
-        idx, thr, best_gini = best_split(X, y, features)
+        
+        if self.rndm_forest:
+            n_features = X.shape[1]
+            feature_indices = np.random.choice(n_features, self.max_features, replace=False)
+            X = X[:, feature_indices]
+            self.X_sample = X
+        
+        idx, thr, best_gini = best_split(X, y)
         # Solo split si mejora la impureza del nodo
-        if idx is None or best_gini >= node.gini:
+        if idx is None or best_gini >= node.gini: # ¿Epsilon?
             return node
 
         # Particionar y crear subnodos
