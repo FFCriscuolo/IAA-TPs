@@ -1,2 +1,4 @@
 ucimlrepo
 numpy
+matplotlib
+collections
