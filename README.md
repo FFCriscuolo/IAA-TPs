@@ -49,6 +49,4 @@ pip install -r requirements.txt
 
 ## Autores
 
-**Mora Maurizio**
-**Juan Bautista Gramaglia**
-**Facundo F. Criscuolo**
+**Mora Maurizio**, **Juan Bautista Gramaglia** y **Facundo F. Criscuolo**
