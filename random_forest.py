@@ -48,21 +48,3 @@ class RF:
             final_preds.append(most_common)
         return np.array(final_preds)
 
-# forest = RF(
-#     n_estimators=1,
-#     max_depth=5,
-#     max_features=30,
-#     bootstrap=False
-# )
-
-# forest.fit(X_train, y_train)
-# y_pred = forest.predict(X_train)
-# print("Accuracy:", np.mean(y_pred == y_train))
-
-# tree = CART(
-#     max_depth=5,
-# )
-
-# tree.fit(X_train, y_train)
-# y_pred = tree.predict(X_train)
-# print("Accuracy:", np.mean(y_pred == y_train))
