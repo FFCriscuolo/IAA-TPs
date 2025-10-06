@@ -14,13 +14,12 @@ IAA-TPs/
 ├── tree.py                 # Implementación de Árbol de Decisión (CART)
 ├── random_forest.py        # Implementación de Random Forest (RF)
 │
-├── notebooks/
-│   ├── punto_2.ipynb       # Implementación desde cero (CART)
-│   ├── punto_3.ipynb       # Optimización del modelo
-│   ├── punto_4.ipynb       # Extensión a Random Forests
-│   ├── punto_5.ipynb       # k-NN
-│   ├── punto_6.ipynb       # Comparación de resultados
-│   └── punto_7.ipynb       # Conclusiones finales
+├── 2.ipynb       # Implementación desde cero (CART)
+├── 3.ipynb       # Optimización del modelo
+├── 4.ipynb       # Extensión a Random Forests
+├── 5.ipynb       # k-NN
+├── 6.ipynb       # Comparación de resultados
+├── 7.ipynb       # Conclusiones finales
 │
 ├── requirements.txt        # Librerías necesarias para ejecutar el TP
 │
@@ -45,7 +44,7 @@ pip install -r requirements.txt
 ## Ejecución
 
 1. Ejecutar `data.py` para generar los conjuntos de entrenamiento y prueba.
-2. Abrir en orden los notebooks dentro de la carpeta `notebooks/` para reproducir los resultados de cada punto.
+2. Abrir en orden los notebooks para reproducir los resultados de cada punto.
 3. Los módulos `knn.py`, `tree.py` y `random_forest.py` son importados y utilizados en los notebooks adicionales.
 
 ## Autores
